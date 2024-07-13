@@ -1,0 +1,20 @@
+.wrapper__nav {
+    display: flex;
+    justify-content: center;
+    background-color: #e1e1e1;
+}
+
+.wrapper__nav nav {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.wrapper__nav nav a {
+    text-decoration: none;
+    color: #000;
+    font-size: 18px;
+}
+

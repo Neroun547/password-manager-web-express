@@ -1,0 +1,9 @@
+.wrapper__response-message {
+    display: none;
+    text-align: center;
+    color: #fff;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 10px 0;
+    margin-top: 20px;
+}

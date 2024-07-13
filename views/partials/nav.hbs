@@ -1,0 +1,13 @@
+<div class="wrapper__nav">
+    <nav>
+        {{#if auth}}
+            <a href="/">Головна</a>
+            <a href="/passwords">Мої паролі</a>
+            <a href="/auth/exit">Вийти</a>
+        {{else}}
+            <a href="/">Головна</a>
+            <a href="/auth">Авторизація</a>
+            <a href="/signup">Реєстрація</a>
+        {{/if}}
+    </nav>
+</div>
