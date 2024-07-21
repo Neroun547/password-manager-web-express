@@ -18,6 +18,7 @@ const {authGuard} = require("./guards/auth.guard");
 const {authRedirectGuard} = require("./guards/auth-redirect.guard");
 const {createPasswordValidation} = require("./validations/passwords/create-password.validation");
 const { deletePasswordValidation } = require("./validations/passwords/delete-password.validation");
+const {loadMorePasswordsValidation} = require("./validations/passwords/load-more-passwords.validation");
 
 app.use(express.static(resolve("static")));
 app.use(express.json());
@@ -36,6 +37,7 @@ app.post("/signup", signupValidation);
 app.use("/signup", signupController);
 
 app.use("/passwords", authRedirectGuard);
+app.get("/passwords/load-more", loadMorePasswordsValidation);
 app.post("/passwords", createPasswordValidation);
 app.delete("/passwords/:id", deletePasswordValidation);
 app.use("/passwords", passwordsController);

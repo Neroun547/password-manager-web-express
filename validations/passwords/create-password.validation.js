@@ -11,6 +11,12 @@ function createPasswordValidation(req, res, next) {
 
         return;
     }
+    if(req.body.password.length < 1 || req.body.password.length > 30) {
+        res.status(400);
+        res.send({ message: "Пароль має бути від 1 до 30 символів" });
+
+        return;
+    }
     next();
 }
 

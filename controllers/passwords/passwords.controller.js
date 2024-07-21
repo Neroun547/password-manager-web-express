@@ -4,27 +4,26 @@ const router = express.Router();
 const connection = require("../../db/connect");
 
 const {encrypt} = require("../../common/encrypt");
-const { decrypt } = require("../../common/decrypt");
+const {parsePasswordsData} = require("./parse-passwords-data");
 
 router.get("/", async (req, res) => {
-    const [rows] = await connection.query("SELECT * FROM passwords WHERE user_id = ?", [req.user.id]);
-    const parseData = [];
+    const [rows] = await connection.query("SELECT * FROM passwords WHERE user_id = ? ORDER BY id DESC LIMIT 10", [req.user.id]);
+    const passwordsCountQueryResult = await connection.query("SELECT COUNT(*) FROM passwords WHERE user_id=?", [req.user.id]);
 
-    if(rows && rows.length > 0) {
-        for(let i = 0; i < rows.length; i++) {
-            parseData.push({
-                description: rows[i].description,
-                password: decrypt(rows[i].password, process.env.SECRET_IV_FOR_PASSWORDS, process.env.SECRET_KEY_FOR_PASSWORDS),
-                id: rows[i].id
-            });
-        }
-    }
     res.render("passwords/passwords", {
         auth: req.auth,
         styles: ["/css/passwords/passwords.css", "/css/components/form.component.css", "/css/components/response-message.component.css"],
         scripts: ["/js/passwords/passwords.js"],
-        passwords: parseData
+        passwords: parsePasswordsData(rows),
+        loadMore: passwordsCountQueryResult[0][0]['COUNT(*)'] > 10
     });
+});
+
+router.get("/load-more", async (req, res) => {
+    const [rows] = await connection.query("SELECT * FROM passwords WHERE user_id = ? ORDER BY id DESC LIMIT ? OFFSET ?", [req.user.id, req.query["take"], req.query["skip"]]);
+    const passwordsCountQueryResult = await connection.query("SELECT COUNT(*) FROM passwords WHERE user_id=?", [req.user.id]);
+
+    res.send({ data: parsePasswordsData(rows), loadMore: (passwordsCountQueryResult[0][0]['COUNT(*)'] - (req.query["skip"] + req.query["take"])) > 0 });
 });
 
 router.post("/", async (req, res) => {
