@@ -2,10 +2,13 @@ const createPasswordForm = document.getElementById("create-password-form");
 const wrapperResponseMessage = document.querySelector(".wrapper__response-message");
 const wrapperPasswords = document.querySelector(".wrapper__passwords");
 const deletePasswordItemsBtn = document.querySelectorAll(".wrapper__passwords-item-delete-btn");
+const editPasswordItemsBtn = document.querySelectorAll(".wrapper__passwords-item-edit-password-button");
 const loadMoreBtn = document.querySelector(".load-more-btn");
+const editPasswordItemsForm = document.querySelectorAll(".wrapper__passwords-item-edit-password-form");
+
 let loadMoreSkip = 10;
 
-export function createPasswordItem(description, password, id) {
+function createPasswordItem(description, password, id) {
     const wrapperItem = document.createElement('div');
     wrapperItem.classList.add('wrapper__passwords-item');
 
@@ -44,6 +47,44 @@ for(let i = 0; i < deletePasswordItemsBtn.length; i++) {
         deletePasswordItemsBtn[i].parentElement.remove();
 
         loadMoreSkip -= 1;
+    });
+}
+
+for(let i = 0; i < editPasswordItemsForm.length; i++) {
+    editPasswordItemsForm[i].addEventListener("submit", (e) => {
+        const passwordId = editPasswordItemsForm[i].parentElement.getAttribute("id");
+
+        const newDescription = e.target[0].value;
+        const newPassword = e.target[1].value;
+
+        e.preventDefault();
+
+        fetch("/passwords/" + passwordId, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                description: newDescription,
+                newPassword: newPassword
+            })
+        });
+    });
+}
+
+for(let i = 0; i < editPasswordItemsBtn.length; i++) {
+    editPasswordItemsBtn[i].addEventListener("click", () => {
+        const form = editPasswordItemsBtn[i].parentElement.querySelector(".wrapper__passwords-item-edit-password-form");
+
+        if(!form.style.display || form.style.display === "none") {
+            form.style.display = "flex";
+
+            editPasswordItemsBtn[i].innerHTML = "Скасувати";
+        } else {
+            form.style.display = "none";
+
+            editPasswordItemsBtn[i].innerHTML = "Редагувати";
+        }
     });
 }
 

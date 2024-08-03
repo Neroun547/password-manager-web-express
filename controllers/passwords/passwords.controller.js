@@ -35,9 +35,13 @@ router.post("/", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-    await connection.query("DELETE FROM passwords WHERE id = ?", [Number(req.params.id)]);
+    await connection.query("DELETE FROM passwords WHERE id = ? AND user_id = ?", [Number(req.params.id), req.user.id]);
 
     res.sendStatus(200);
+});
+
+router.patch("/:id", async (req, res) => {
+    await connection.query("UPDATE passwords WHERE id = ? SET description = ? AND password = ?", [Number(req.params.id), req.body.description, req.body.password]);
 });
 
 module.exports = router;
