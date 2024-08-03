@@ -7,8 +7,13 @@ function authGuard(req, res, next) {
     if(!authToken) {
         req.auth = false;
     } else {
-        req.user = jwt.verify(authToken, process.env.JWT_SECRET);
-        req.auth = true;
+        try {
+            req.user = jwt.verify(authToken, process.env.JWT_SECRET);
+            req.auth = true;
+        } catch(e) {
+            console.log(e);
+            req.auth = false;
+        }
     }
     next();
 }
