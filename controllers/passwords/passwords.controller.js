@@ -41,7 +41,11 @@ router.delete("/:id", async (req, res) => {
 });
 
 router.patch("/:id", async (req, res) => {
-    await connection.query("UPDATE passwords WHERE id = ? SET description = ? AND password = ?", [Number(req.params.id), req.body.description, req.body.password]);
+    const hash = encrypt(req.body.password, process.env.SECRET_IV_FOR_PASSWORDS, process.env.SECRET_KEY_FOR_PASSWORDS);
+
+    await connection.query("UPDATE passwords SET description = ?, password = ? WHERE id = ? AND user_id = ?", [req.body.description, hash, Number(req.params.id), req.user.id]);
+
+    res.send({ message: "Пароль оновлено успішно" });
 });
 
 module.exports = router;

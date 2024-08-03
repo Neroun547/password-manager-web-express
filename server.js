@@ -40,6 +40,7 @@ app.use("/passwords", authRedirectGuard);
 app.get("/passwords/load-more", loadMorePasswordsValidation);
 app.post("/passwords", createPasswordValidation);
 app.delete("/passwords/:id", deletePasswordValidation);
+app.patch("/passwords/:id", createPasswordValidation);
 app.use("/passwords", passwordsController);
 
 app.listen(Number(process.env.APP_PORT), () => {
