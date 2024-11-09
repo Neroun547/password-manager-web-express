@@ -1,0 +1,26 @@
+.wrapper__settings {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+}
+
+.wrapper__settings h3 {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.wrapper__settings-item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.wrapper__settings-item input {
+    width: 75%;
+}
+
+.wrapper__settings-item button {
+    width: 20%;
+    cursor: pointer;
+}

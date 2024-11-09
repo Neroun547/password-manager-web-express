@@ -4,7 +4,7 @@ const router = express.Router();
 const connection = require("../../db/connect");
 
 const {encrypt} = require("../../common/encrypt");
-const {parsePasswordsData} = require("./parse-passwords-data");
+const {parsePasswordsData} = require("./utils/parse-passwords-data");
 
 router.get("/", async (req, res) => {
     const [rows] = await connection.query("SELECT * FROM passwords WHERE user_id = ? ORDER BY id DESC LIMIT 10", [req.user.id]);

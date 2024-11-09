@@ -1,4 +1,4 @@
-const {decrypt} = require("../../common/decrypt");
+const {decrypt} = require("../../../common/decrypt");
 
 function parsePasswordsData(rows) {
     const parseData = [];
